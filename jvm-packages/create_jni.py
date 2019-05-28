@@ -80,7 +80,7 @@ if __name__ == "__main__":
         with cd("build"):
             if sys.platform == "win32":
                 # Force x64 build on Windows.
-                maybe_generator = ' -G"Visual Studio 14 Win64"'
+                maybe_generator = ' -G "Visual Studio 16" -A x64'
             else:
                 maybe_generator = ""
             if sys.platform == "linux":
@@ -93,8 +93,8 @@ if __name__ == "__main__":
             run("cmake --build . --config Release" + maybe_parallel_build)
 
         with cd("demo/regression"):
-            run(sys.executable + " mapfeat.py")
-            run(sys.executable + " mknfold.py machine.txt 1")
+            run("python mapfeat.py")
+            run("python mknfold.py machine.txt 1")
 
     print("copying native library")
     library_name = {
@@ -112,8 +112,8 @@ if __name__ == "__main__":
     print("copying train/test files")
     maybe_makedirs("xgboost4j-spark/src/test/resources")
     with cd("../demo/regression"):
-        run("{} mapfeat.py".format(sys.executable))
-        run("{} mknfold.py machine.txt 1".format(sys.executable))
+        run("python mapfeat.py")
+        run("python mknfold.py machine.txt 1")
 
     for file in glob.glob("../demo/regression/machine.txt.t*"):
         cp(file, "xgboost4j-spark/src/test/resources")
